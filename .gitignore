@@ -1,0 +1,28 @@
+.vs/
+lib/
+bin/
+obj/
+*.user
+launchSettings.json
+artifacts/
+msbuild.binlog
+.vscode/
+
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Library/
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+*.pidb
+*.suo
+*.user
+*.unityproj
+*.booproj
