@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{75C3F5B9-3B63-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveTracker.Treadmill.Configuration.Forms", "src\ViveTracker.Treadmill.Configuration.Forms\ViveTracker.Treadmill.Configuration.Forms.csproj", "{4FD85FF7-9DBA-4867-9650-3B933926C343}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveTracker.Treadmill.Configuration", "src\ViveTracker.Treadmill.Configuration\ViveTracker.Treadmill.Configuration.csproj", "{B959D3D2-C233-4740-AD63-5A98719FFC6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{4FD85FF7-9DBA-4867-9650-3B933926C343}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FD85FF7-9DBA-4867-9650-3B933926C343}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FD85FF7-9DBA-4867-9650-3B933926C343}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B959D3D2-C233-4740-AD63-5A98719FFC6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B959D3D2-C233-4740-AD63-5A98719FFC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B959D3D2-C233-4740-AD63-5A98719FFC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B959D3D2-C233-4740-AD63-5A98719FFC6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{301D4BDD-0B79-4ABC-80D7-640AB5C2398E} = {F68F6B56-E63E-47AC-9400-99FB94C0FD57}
 		{20CFE1AA-7426-4810-B2F4-43C5F3CEA69A} = {F68F6B56-E63E-47AC-9400-99FB94C0FD57}
 		{4FD85FF7-9DBA-4867-9650-3B933926C343} = {75C3F5B9-3B63-4F24-B595-704519427B38}
+		{B959D3D2-C233-4740-AD63-5A98719FFC6D} = {1BA4ED37-4EF1-42E7-ACDF-FDFB5B19756B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDF8701C-DD48-44FA-BED8-86BECD4DAF45}

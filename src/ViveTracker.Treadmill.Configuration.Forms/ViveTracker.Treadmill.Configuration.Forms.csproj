@@ -17,8 +17,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINFORM_HOST</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,7 +26,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -45,14 +45,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ViveTracker.Treadmill.Configuration.Viewport\Assets\Scripts\ApplicationModel.cs">
+      <Link>Metadata\ApplicationModel.cs</Link>
+    </Compile>
+    <Compile Include="..\ViveTracker.Treadmill.Configuration.Viewport\Assets\Scripts\Models\AppInfo.cs">
+      <Link>Metadata\AppInfo.cs</Link>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ProcessHelper.cs" />
+    <Compile Include="Metadata\Const.cs" />
+    <Compile Include="Models\PipedProcess.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectablePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -79,16 +93,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ViveTracker.Treadmill.Configuration\ViveTracker.Treadmill.Configuration.csproj">
+      <Project>{b959d3d2-c233-4740-ad63-5a98719ffc6d}</Project>
+      <Name>ViveTracker.Treadmill.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ViveTracker.Treadmill.VirtualGamePad\ViveTracker.Treadmill.VirtualGamePad.csproj">
       <Project>{ee794250-13a6-4159-8723-f30dbd21423a}</Project>
       <Name>ViveTracker.Treadmill.VirtualGamePad</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\SimWinGamePad\ScpDriverInstaller.exe">
-      <Link>ScpDriverInstaller.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
