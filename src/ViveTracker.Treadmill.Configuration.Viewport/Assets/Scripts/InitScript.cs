@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ViveTracker.Treadmill.NugetToUnity.Interface;
+using ViveTracker.Treadmill.NugetToUnity.Service;
 
 public class InitScript : MonoBehaviour {
 
@@ -28,6 +30,8 @@ public class InitScript : MonoBehaviour {
         {
             Arguments = Environment.GetCommandLineArgs();
             Application.targetFrameRate = 60;
+
+            DependencyService.Register<IMessageBox>(new MessageBox());
 
 #if RELEASE
 

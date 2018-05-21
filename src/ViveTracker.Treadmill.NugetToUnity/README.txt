@@ -1,0 +1,1 @@
+﻿This project is just here for outputing NuGet library on Unity project, and to reference some common implementation for interprocess message

@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ViveTracker.Treadmill.Configuration.Forms.Helpers;
 using ViveTracker.Treadmill.Configuration.Forms.Metadata;
+using ViveTracker.Treadmill.Configuration.Forms.Services;
+using ViveTracker.Treadmill.NugetToUnity.Interface;
+using ViveTracker.Treadmill.NugetToUnity.Service;
 using ViveTracker.Treadmill.VirtualGamePad.Helper;
 
 namespace ViveTracker.Treadmill.Configuration.Forms
@@ -38,6 +41,8 @@ namespace ViveTracker.Treadmill.Configuration.Forms
         public Form1()
         {
             InitializeComponent();
+
+            DependencyService.Register<IMessageBox>(new CustomMessageBox());
 
             Application.ApplicationExit += Application_ApplicationExit;
 

@@ -26,7 +26,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{75C3F5B9-3B63-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveTracker.Treadmill.Configuration.Forms", "src\ViveTracker.Treadmill.Configuration.Forms\ViveTracker.Treadmill.Configuration.Forms.csproj", "{4FD85FF7-9DBA-4867-9650-3B933926C343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveTracker.Treadmill.Configuration", "src\ViveTracker.Treadmill.Configuration\ViveTracker.Treadmill.Configuration.csproj", "{B959D3D2-C233-4740-AD63-5A98719FFC6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViveTracker.Treadmill.Configuration", "src\ViveTracker.Treadmill.Configuration\ViveTracker.Treadmill.Configuration.csproj", "{B959D3D2-C233-4740-AD63-5A98719FFC6D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{AE261964-AB52-4060-B887-FD39B1CD5375}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveTracker.Treadmill.NugetToUnity", "src\ViveTracker.Treadmill.NugetToUnity\ViveTracker.Treadmill.NugetToUnity.csproj", "{BD936E35-FB57-404C-9F9B-B53AE6881F7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +62,10 @@ Global
 		{B959D3D2-C233-4740-AD63-5A98719FFC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B959D3D2-C233-4740-AD63-5A98719FFC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B959D3D2-C233-4740-AD63-5A98719FFC6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD936E35-FB57-404C-9F9B-B53AE6881F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD936E35-FB57-404C-9F9B-B53AE6881F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD936E35-FB57-404C-9F9B-B53AE6881F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD936E35-FB57-404C-9F9B-B53AE6881F7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +78,7 @@ Global
 		{20CFE1AA-7426-4810-B2F4-43C5F3CEA69A} = {F68F6B56-E63E-47AC-9400-99FB94C0FD57}
 		{4FD85FF7-9DBA-4867-9650-3B933926C343} = {75C3F5B9-3B63-4F24-B595-704519427B38}
 		{B959D3D2-C233-4740-AD63-5A98719FFC6D} = {1BA4ED37-4EF1-42E7-ACDF-FDFB5B19756B}
+		{BD936E35-FB57-404C-9F9B-B53AE6881F7E} = {AE261964-AB52-4060-B887-FD39B1CD5375}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDF8701C-DD48-44FA-BED8-86BECD4DAF45}

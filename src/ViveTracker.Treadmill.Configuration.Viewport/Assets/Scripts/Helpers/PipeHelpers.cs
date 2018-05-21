@@ -4,6 +4,10 @@ using UnityEngine;
 using System.Linq;
 using System.IO.Pipes;
 using System.IO;
+using Newtonsoft.Json;
+using ViveTracker.Treadmill.NugetToUnity.Models;
+using ViveTracker.Treadmill.NugetToUnity.Service;
+using ViveTracker.Treadmill.NugetToUnity.Interface;
 
 public static class PipeHelpers {
 
@@ -69,20 +73,21 @@ public static class PipeHelpers {
             sw.WriteLine("OK");
         else
             sw.WriteLine("KO");
+
+        //TEST TO REMOVE
+        DependencyService.Get<IMessageBox>().ShowAlert("Mon alert depuis Unity");
     }
 
-    public static void Send()
+    public static void Send(MethodProxy methodCall)
     {
-
-    }
-
-    public static bool HasReceived()
-    {
-        return false;
+        sw.WriteLine(methodCall.GetAsJsonMessage());
     }
 
     public static void Receive()
     {
-
+        //TODO: Add a Task.Run and execute only when dispatched,
+        //as Microsoft implementation is pretty stupid and don't
+        //allow non-blocking read by default
+        //TODO: Add a cancelation token ?
     }
 }

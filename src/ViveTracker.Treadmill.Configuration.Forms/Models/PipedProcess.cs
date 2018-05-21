@@ -6,6 +6,7 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViveTracker.Treadmill.NugetToUnity.Models;
 
 namespace ViveTracker.Treadmill.Configuration.Forms.Models
 {
@@ -18,6 +19,8 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
         //This pipe receive
         private AnonymousPipeServerStream _clientReceive { get; set; }
         private StreamReader sr = null;
+
+        private Task receiveHandler = null;
 
         public PipedProcess() : base()
         {
@@ -67,9 +70,28 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
             //Should receive OK a second time
             var result = sr.ReadLine();
             if (result == "OK")
+            {
+                receiveHandler = ReceiveHandler();
                 return true;
+            }
 
             return false;
+        }
+
+        private Task ReceiveHandler()
+        {
+            return Task.Run(async () =>
+            {
+                while (true)
+                {
+                    var content = sr.ReadLine();
+                    if (string.IsNullOrEmpty(content))
+                        break;
+
+                    var mp = MethodProxy.GetFromJson(content);
+                    mp.Invoke();
+                }
+            });
         }
 
         public string GetReceivePipeHandler()
