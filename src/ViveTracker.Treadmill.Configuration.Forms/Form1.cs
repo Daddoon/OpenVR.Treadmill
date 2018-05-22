@@ -13,9 +13,10 @@ using System.Windows.Forms;
 using ViveTracker.Treadmill.Configuration.Forms.Helpers;
 using ViveTracker.Treadmill.Configuration.Forms.Metadata;
 using ViveTracker.Treadmill.Configuration.Forms.Services;
-using ViveTracker.Treadmill.NugetToUnity.Interface;
-using ViveTracker.Treadmill.NugetToUnity.Service;
+using ViveTracker.Treadmill.Common.Interface;
+using ViveTracker.Treadmill.Common.Services;
 using ViveTracker.Treadmill.VirtualGamePad.Helper;
+using ViveTracker.Treadmill.Common.Services;
 
 namespace ViveTracker.Treadmill.Configuration.Forms
 {

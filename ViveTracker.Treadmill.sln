@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViveTracker.Treadmill.Confi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{AE261964-AB52-4060-B887-FD39B1CD5375}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveTracker.Treadmill.NugetToUnity", "src\ViveTracker.Treadmill.NugetToUnity\ViveTracker.Treadmill.NugetToUnity.csproj", "{BD936E35-FB57-404C-9F9B-B53AE6881F7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveTracker.Treadmill.Common", "src\ViveTracker.Treadmill.Common\ViveTracker.Treadmill.Common.csproj", "{BD936E35-FB57-404C-9F9B-B53AE6881F7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

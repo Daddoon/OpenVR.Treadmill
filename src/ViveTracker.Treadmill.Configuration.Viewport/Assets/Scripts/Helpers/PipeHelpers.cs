@@ -5,9 +5,11 @@ using System.Linq;
 using System.IO.Pipes;
 using System.IO;
 using Newtonsoft.Json;
-using ViveTracker.Treadmill.NugetToUnity.Models;
-using ViveTracker.Treadmill.NugetToUnity.Service;
-using ViveTracker.Treadmill.NugetToUnity.Interface;
+using ViveTracker.Treadmill.Common.Models;
+using ViveTracker.Treadmill.Common.Services;
+using ViveTracker.Treadmill.Common.Interface;
+using ViveTracker.Treadmill.Common.Interop;
+using System.Threading.Tasks;
 
 public static class PipeHelpers {
 
@@ -36,6 +38,11 @@ public static class PipeHelpers {
 
         return;
 
+    }
+
+    public static void RegisterPipesOnServices(StreamWriter sw)
+    {
+        DependencyService.Get<IMessageBox>()?.AddPipe(sw);
     }
 
     public static void OpenPipes()
@@ -74,20 +81,32 @@ public static class PipeHelpers {
         else
             sw.WriteLine("KO");
 
-        //TEST TO REMOVE
-        DependencyService.Get<IMessageBox>().ShowAlert("Mon alert depuis Unity");
+        RegisterPipesOnServices(sw);
+        ReceiveHandler();
     }
 
-    public static void Send(MethodProxy methodCall)
-    {
-        sw.WriteLine(methodCall.GetAsJsonMessage());
-    }
+    private static Task _receiveTask = null;
 
-    public static void Receive()
+    private static Task ReceiveHandler()
     {
-        //TODO: Add a Task.Run and execute only when dispatched,
-        //as Microsoft implementation is pretty stupid and don't
-        //allow non-blocking read by default
-        //TODO: Add a cancelation token ?
+        if (_receiveTask != null)
+            return _receiveTask;
+
+        _receiveTask = Task.Run(async () =>
+        {
+            while (true)
+            {
+                var content = sr.ReadLine();
+                if (string.IsNullOrEmpty(content))
+                    break;
+
+                ContextBridge.Receive(content);
+                //TODO: Manage return value
+
+                await Task.Delay(30);
+            }
+        });
+
+        return _receiveTask;
     }
 }

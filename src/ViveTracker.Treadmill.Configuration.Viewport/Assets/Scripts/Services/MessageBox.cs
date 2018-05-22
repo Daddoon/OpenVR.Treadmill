@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
-using ViveTracker.Treadmill.NugetToUnity.Interface;
-using ViveTracker.Treadmill.NugetToUnity.Models;
+using ViveTracker.Treadmill.Common.Interface;
+using ViveTracker.Treadmill.Common.Models;
+using ViveTracker.Treadmill.Common.Services;
 
-public class MessageBox : IMessageBox
+public class MessageBox : PipedEntity, IMessageBox
 {
     public void ShowAlert(string message)
     {
-        PipeHelpers.Send(new MethodProxy(typeof(IMessageBox), nameof(ShowAlert), new object[] { message }));
+        MethodDispatcher.CallVoidMethod(GetPipe(), MethodBase.GetCurrentMethod(), message);
     }
 }

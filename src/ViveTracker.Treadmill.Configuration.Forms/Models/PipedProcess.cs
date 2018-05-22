@@ -6,7 +6,8 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViveTracker.Treadmill.NugetToUnity.Models;
+using ViveTracker.Treadmill.Common.Interop;
+using ViveTracker.Treadmill.Common.Models;
 
 namespace ViveTracker.Treadmill.Configuration.Forms.Models
 {
@@ -88,8 +89,10 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
                     if (string.IsNullOrEmpty(content))
                         break;
 
-                    var mp = MethodProxy.GetFromJson(content);
-                    mp.Invoke();
+                    ContextBridge.Receive(content);
+                    //TODO: Manage return value
+
+                    await Task.Delay(30);
                 }
             });
         }

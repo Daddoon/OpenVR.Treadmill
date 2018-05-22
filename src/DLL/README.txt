@@ -1,0 +1,1 @@
+The current NewtonSoft.Json implementation is an AOT compatible one

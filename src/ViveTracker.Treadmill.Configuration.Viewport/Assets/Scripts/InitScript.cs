@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ViveTracker.Treadmill.NugetToUnity.Interface;
-using ViveTracker.Treadmill.NugetToUnity.Service;
+using ViveTracker.Treadmill.Common.Interface;
+using ViveTracker.Treadmill.Common.Services;
 
 public class InitScript : MonoBehaviour {
 

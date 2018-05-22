@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -83,7 +84,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -102,9 +102,9 @@
       <Project>{b959d3d2-c233-4740-ad63-5a98719ffc6d}</Project>
       <Name>ViveTracker.Treadmill.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ViveTracker.Treadmill.NugetToUnity\ViveTracker.Treadmill.NugetToUnity.csproj">
+    <ProjectReference Include="..\ViveTracker.Treadmill.Common\ViveTracker.Treadmill.Common.csproj">
       <Project>{bd936e35-fb57-404c-9f9b-b53ae6881f7e}</Project>
-      <Name>ViveTracker.Treadmill.NugetToUnity</Name>
+      <Name>ViveTracker.Treadmill.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\ViveTracker.Treadmill.VirtualGamePad\ViveTracker.Treadmill.VirtualGamePad.csproj">
       <Project>{ee794250-13a6-4159-8723-f30dbd21423a}</Project>
