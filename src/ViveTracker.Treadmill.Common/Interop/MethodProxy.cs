@@ -46,14 +46,26 @@ namespace ViveTracker.Treadmill.Common.Interop
         }
     }
 
+    public enum CallbackDirection : int
+    {
+        In = 0,
+        Out = 1
+    }
+
     //NOTE: We can actually store Type instead of TypeProxy, as we are serializing
     //But if we need to add more metadata on objects in the futur, it will be more easier to refactore the code this way
     [Serializable]
     public class MethodProxy
     {
+        public CallbackDirection Direction { get; set; }
+
         public int TaskIdentity { get; set; }
 
         public bool TaskSuccess { get; set; }
+
+        public bool AsyncTask { get; set; }
+
+        public TypeProxy ReturnType { get; set; }
 
         public object ReturnValue { get; set; }
 

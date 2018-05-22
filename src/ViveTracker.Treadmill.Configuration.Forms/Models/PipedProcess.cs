@@ -6,8 +6,11 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViveTracker.Treadmill.Common.Helper;
 using ViveTracker.Treadmill.Common.Interop;
 using ViveTracker.Treadmill.Common.Models;
+using ViveTracker.Treadmill.Common.Serialization;
+using ViveTracker.Treadmill.Common.Services;
 
 namespace ViveTracker.Treadmill.Configuration.Forms.Models
 {
@@ -35,6 +38,11 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
 
             _clientReceive.ReadMode = PipeTransmissionMode.Byte;
             _clientSend.ReadMode = PipeTransmissionMode.Byte;
+        }
+
+        public StreamWriter GetSendPipe()
+        {
+            return sw;
         }
 
         public new bool Start()
@@ -89,10 +97,7 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
                     if (string.IsNullOrEmpty(content))
                         break;
 
-                    ContextBridge.Receive(content);
-                    //TODO: Manage return value
-
-                    await Task.Delay(30);
+                    PipeHelper.HandleMethodCalls(sw, content);
                 }
             });
         }

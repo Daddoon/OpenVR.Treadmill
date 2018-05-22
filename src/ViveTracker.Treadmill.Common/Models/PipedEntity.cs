@@ -23,7 +23,7 @@ namespace ViveTracker.Treadmill.Common.Models
 
         public IList<StreamWriter> DisabledPipeList { get; set; }
 
-        public IEnumerable<StreamWriter> GetPipe()
+        public IList<StreamWriter> GetPipe()
         {
             return PipeList;
         }

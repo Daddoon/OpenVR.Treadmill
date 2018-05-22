@@ -43,7 +43,7 @@ namespace ViveTracker.Treadmill.Configuration.Forms
         {
             InitializeComponent();
 
-            DependencyService.Register<IMessageBox>(new CustomMessageBox());
+            ServiceHelper.RegisterServices();
 
             Application.ApplicationExit += Application_ApplicationExit;
 
@@ -59,6 +59,8 @@ namespace ViveTracker.Treadmill.Configuration.Forms
                 ////Start Viewport
                 //process = ProcessHelper.GetNewViewportProcess(panel1.Handle.ToInt32());
                 //process.Start();
+
+                ServiceHelper.ConnectProcessToServices(gamepadProcess);
 
                 // Doesn't work for some reason ?!
                 //unityHWND = process.MainWindowHandle;

@@ -10,6 +10,6 @@ public class MessageBox : PipedEntity, IMessageBox
 {
     public void ShowAlert(string message)
     {
-        MethodDispatcher.CallVoidMethod(GetPipe(), MethodBase.GetCurrentMethod(), message);
+        MethodDispatcher.CallVoidMethod(GetPipe()[0], MethodBase.GetCurrentMethod(), message);
     }
 }

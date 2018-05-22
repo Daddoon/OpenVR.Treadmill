@@ -4,6 +4,7 @@ using System.Reflection;
 using ViveTracker.Treadmill.Common.Serialization;
 using ViveTracker.Treadmill.Common.Services;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ViveTracker.Treadmill.Common.Interop
 {
@@ -23,20 +24,52 @@ namespace ViveTracker.Treadmill.Common.Interop
             return null;
         }
 
-        public static void SendReturnValue(MethodProxy methodResult)
+        public static void ClearRequestValues(MethodProxy methodResult)
         {
+            if (methodResult == null)
+                return;
 
+            methodResult.GenericTypes = null;
+            methodResult.InterfaceType = null;
+            methodResult.Parameters = null;
         }
 
-        public static MethodProxy Receive(string methodProxyJson)
+        private static object GetResultFromTask(Type returnType, Task taskResult)
         {
-            object defaultValue = default(object);
-            MethodProxy methodProxy = null;
+            if (returnType == null || returnType == typeof(void) || returnType == typeof(Task))
+            {
+                return null;
+            }
 
             try
             {
-                methodProxy = BridgeSerializer.Deserialize<MethodProxy>(methodProxyJson);
+                if (taskResult.IsCompleted == false)
+                {
+                    taskResult.GetAwaiter().GetResult();
+                }
 
+                var result = taskResult.GetType().GetProperty("Result").GetValue(taskResult, null);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return GetDefault(returnType);
+            }
+        }
+
+        public static string GetJSONReturnValue(MethodProxy methodResult)
+        {
+            ClearRequestValues(methodResult);
+            return BridgeSerializer.Serialize(methodResult);
+        }
+
+        public static MethodProxy Receive(MethodProxy methodProxy)
+        {
+            object defaultValue = default(object);
+
+            try
+            {
                 Type iface = methodProxy.InterfaceType.ResolvedType();
                 object concreteService = DependencyService.Get(iface);
 
@@ -56,6 +89,11 @@ namespace ViveTracker.Treadmill.Common.Interop
                 {
                     methodProxy.ReturnValue = baseMethod.Invoke(concreteService, methodProxy.Parameters);
                     methodProxy.TaskSuccess = true;
+                }
+
+                if (methodProxy.AsyncTask)
+                {
+                    methodProxy.ReturnValue = GetResultFromTask(methodProxy.ReturnType.ResolvedType(), (Task)methodProxy.ReturnValue);
                 }
             }
             catch (Exception)

@@ -11,6 +11,7 @@ using ViveTracker.Treadmill.Common.Services;
 using ViveTracker.Treadmill.Common.Interface;
 using ViveTracker.Treadmill.Common.Interop;
 using System.Threading.Tasks;
+using ViveTracker.Treadmill.Common.Helper;
 
 public static class PipeHelpers {
 
@@ -37,13 +38,6 @@ public static class PipeHelpers {
 
         return;
 
-    }
-
-    public static void RegisterPipesOnServices(StreamWriter sw)
-    {
-        var result = DependencyService.Get<IMessageBox>();
-        if (result != null)
-            result.AddPipe(sw);
     }
 
     public static void OpenPipes()
@@ -82,7 +76,7 @@ public static class PipeHelpers {
         else
             sw.WriteLine("KO");
 
-        RegisterPipesOnServices(sw);
+        ServiceHelper.ConnectProcessToServices(sw);
         ReceiveHandler();
     }
 
@@ -101,10 +95,7 @@ public static class PipeHelpers {
                 if (string.IsNullOrEmpty(content))
                     break;
 
-                ContextBridge.Receive(content);
-                //TODO: Manage return value
-
-                Task.Delay(30).GetAwaiter();
+                PipeHelper.HandleMethodCalls(sw, content);
             }
         });
 

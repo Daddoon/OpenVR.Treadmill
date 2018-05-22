@@ -38,6 +38,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Threading.Tasks.Net35, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Aliases>Task35</Aliases>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,6 +65,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ProcessHelper.cs" />
+    <Compile Include="Helpers\ServiceHelper.cs" />
     <Compile Include="Metadata\Const.cs" />
     <Compile Include="Models\PipedProcess.cs">
       <SubType>Component</SubType>
@@ -71,6 +75,7 @@
     <Compile Include="SelectablePanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Services\GamepadService.cs" />
     <Compile Include="Services\MessageBox.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

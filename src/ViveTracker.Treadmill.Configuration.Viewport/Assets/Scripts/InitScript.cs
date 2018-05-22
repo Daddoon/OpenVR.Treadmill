@@ -31,7 +31,7 @@ public class InitScript : MonoBehaviour {
             Arguments = Environment.GetCommandLineArgs();
             Application.targetFrameRate = 60;
 
-            DependencyService.Register<IMessageBox>(new MessageBox());
+            ServiceHelper.RegisterServices();
 
 #if RELEASE
 

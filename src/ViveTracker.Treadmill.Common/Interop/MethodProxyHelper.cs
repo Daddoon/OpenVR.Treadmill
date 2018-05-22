@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ViveTracker.Treadmill.Common.Interop
 {
-    public static class MethodProxyHelper
+    internal static class MethodProxyHelper
     {
         private static MethodInfo ParseMethodInfo(MethodInfo method)
         {

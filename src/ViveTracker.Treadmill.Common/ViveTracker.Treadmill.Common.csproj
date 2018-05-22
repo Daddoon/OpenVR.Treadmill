@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nefarius.ViGEmClient">
-      <HintPath>..\DLL\Nefarius.ViGEmClient.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLL\Newtonsoft.Json.dll</HintPath>
@@ -50,28 +48,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ProxyInterface.cs" />
+    <Compile Include="Helper\PipeHelper.cs" />
     <Compile Include="Interface\Base\IPipedEntity.cs" />
+    <Compile Include="Interface\IGamepadService.cs" />
     <Compile Include="Interface\IMessageBox.cs" />
     <Compile Include="Interop\ContextBridge.cs" />
     <Compile Include="Interop\MethodProxy.cs" />
     <Compile Include="Interop\MethodProxyHelper.cs" />
     <Compile Include="Models\DeviceState.cs" />
     <Compile Include="Models\PipedEntity.cs" />
-    <Compile Include="Models\TypeProxy.cs" />
+    <Compile Include="Models\TaskDispatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializer\BridgeSerializerSettings.cs" />
     <Compile Include="Serializer\PrimitiveJsonConverter.cs" />
     <Compile Include="Services\DependencyService.cs" />
     <Compile Include="Services\MethodDispatcher.cs" />
+    <Compile Include="Services\ProcessToProcessDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ViveTracker.Treadmill.VirtualGamePad\ViveTracker.Treadmill.VirtualGamePad.csproj">
-      <Project>{ee794250-13a6-4159-8723-f30dbd21423a}</Project>
-      <Name>ViveTracker.Treadmill.VirtualGamePad</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
