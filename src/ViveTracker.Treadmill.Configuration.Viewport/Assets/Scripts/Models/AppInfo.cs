@@ -53,7 +53,7 @@ public class AppInfo {
 
     public string GetAppExecutableName()
     {
-        return $"{GetAppName()}.exe";
+        return GetAppName() + ".exe";
     }
 
     public readonly string[] Scenes;
@@ -63,7 +63,7 @@ public class AppInfo {
         string[] scenes = new string[Scenes.Length];
         for (int i = 0; i < Scenes.Length; i++)
         {
-            scenes[i] = $@"Assets{Dir}Scenes{Dir}{Scenes[i]}.unity";
+            scenes[i] = @"Assets" + Dir + "Scenes" + Dir + Scenes[i] + ".unity";
         }
 
         return scenes;
@@ -86,12 +86,12 @@ public class AppInfo {
 
     private string GetOutputFolder()
     {
-        string path = $"{Application.dataPath}{Dir}..{Dir}..{Dir}ViveTracker.Treadmill.Configuration.Forms{Dir}bin";
+        string path = "Application.dataPath" + Dir + ".." + Dir + ".." + Dir + "ViveTracker.Treadmill.Configuration.Forms" + Dir + "bin";
 
-        path += $"{Dir}{GetSubFolder()}";
+        path += Dir + GetSubFolder();
         Directory.CreateDirectory(path);
 
-        path += $"{Dir}{GetAppExecutableName()}";
+        path += Dir + GetAppExecutableName();
 
         return path;
     }
@@ -108,7 +108,7 @@ public class AppInfo {
 
     private void Build(BuildOptions? option = null)
     {
-        Debug.Log($"Build started for {GetAppName()}...");
+        Debug.Log("Build started for " + GetAppName() + "...");
 
         var playerOptions = GetDefaultBuildPlayerOptions();
         playerOptions.scenes = GetScenesPath();
@@ -116,13 +116,14 @@ public class AppInfo {
         playerOptions.options = option != null ? playerOptions.options | (BuildOptions)option : playerOptions.options;
 
         var result = BuildPipeline.BuildPlayer(playerOptions);
-        if (result.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
+
+        if (string.IsNullOrEmpty(result))
         {
-            Debug.Log($"Build success for {GetAppName()}!");
+            Debug.Log("Build success for " + GetAppName() + "!");
         }
         else
         {
-            Debug.LogError($"Build failure for {GetAppName()}!");
+            Debug.LogError("Build failure for " + GetAppName() + "!");
         }
         
     }

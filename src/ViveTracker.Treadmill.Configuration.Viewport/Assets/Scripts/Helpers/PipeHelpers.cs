@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System.IO.Pipes;
 using System.IO;
+using System.Threading;
 using Newtonsoft.Json;
 using ViveTracker.Treadmill.Common.Models;
 using ViveTracker.Treadmill.Common.Services;
@@ -29,12 +30,10 @@ public static class PipeHelpers {
             return;
 
         pipeIn = pipeIn.Replace("-pipeInHandle", string.Empty).TrimEnd().Trim('\n').Trim('\r');
-        Debug.Log($"Received PipeIn handle: {pipeIn}");
 
         pipeOut = InitScript.Arguments.FirstOrDefault(p => p.StartsWith("-pipeOutHandle"));
 
         pipeOut = pipeOut.Replace("-pipeOutHandle", string.Empty).TrimEnd().Trim('\n').Trim('\r');
-        Debug.Log($"Received PipeOut handle: {pipeOut}");
 
         return;
 
@@ -42,7 +41,9 @@ public static class PipeHelpers {
 
     public static void RegisterPipesOnServices(StreamWriter sw)
     {
-        DependencyService.Get<IMessageBox>()?.AddPipe(sw);
+        var result = DependencyService.Get<IMessageBox>();
+        if (result != null)
+            result.AddPipe(sw);
     }
 
     public static void OpenPipes()
@@ -92,7 +93,7 @@ public static class PipeHelpers {
         if (_receiveTask != null)
             return _receiveTask;
 
-        _receiveTask = Task.Run(async () =>
+        _receiveTask = Task.Run(() =>
         {
             while (true)
             {
@@ -103,7 +104,7 @@ public static class PipeHelpers {
                 ContextBridge.Receive(content);
                 //TODO: Manage return value
 
-                await Task.Delay(30);
+                Task.Delay(30).GetAwaiter();
             }
         });
 

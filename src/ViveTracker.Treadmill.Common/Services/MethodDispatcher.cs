@@ -160,7 +160,7 @@ namespace ViveTracker.Treadmill.Common.Services
 
             MethodProxy methodProxy = new MethodProxy();
 
-            var iface = methodBase.DeclaringType.GetInterfaces().FirstOrDefault(p => p.GetCustomAttribute<ProxyInterfaceAttribute>() != null);
+            var iface = methodBase.DeclaringType.GetInterfaces().FirstOrDefault(p => p.GetCustomAttributes(typeof(ProxyInterfaceAttribute), false).Any());
             if (iface == null)
             {
                 throw new ArgumentException("Given class method does not contain any possible ProxyInterface. Be sure to add [ProxyInterface] attribute on top of your interface definition");

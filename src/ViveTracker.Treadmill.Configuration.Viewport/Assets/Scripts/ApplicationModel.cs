@@ -10,12 +10,12 @@ public static class ApplicationModel {
 
     public static class Apps
     {
-        public static readonly AppInfo Viewport = new AppInfo(nameof(Viewport), new string[]
+        public static readonly AppInfo Viewport = new AppInfo("Viewport", new string[]
         {
             AppScenes.ViewportScene
         });
 
-        public static readonly AppInfo Gamepad = new AppInfo(nameof(Gamepad), new string[]
+        public static readonly AppInfo Gamepad = new AppInfo("Gamepad", new string[]
         {
             AppScenes.GamepadScene
         });
@@ -25,8 +25,8 @@ public static class ApplicationModel {
 
     public static class AppScenes
     {
-        public const string ViewportScene = nameof(ViewportScene);
+        public const string ViewportScene = "ViewportScene";
 
-        public const string GamepadScene = nameof(GamepadScene);
+        public const string GamepadScene = "GamepadScene";
     }
 }
