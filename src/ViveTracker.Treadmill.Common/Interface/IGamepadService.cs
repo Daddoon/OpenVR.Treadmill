@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViveTracker.Treadmill.Common.Attributes;
+using ViveTracker.Treadmill.Common.Events;
 using ViveTracker.Treadmill.Common.Interface.Base;
 
 namespace ViveTracker.Treadmill.Common.Interface
@@ -12,13 +13,25 @@ namespace ViveTracker.Treadmill.Common.Interface
     [ProxyInterface]
     public interface IGamepadService : IPipedEntity
     {
-        #region BOTH
+        #region EVENT
 
-        Stream GetGamepadReader();
-
-        Stream GetGamepadWriter();
+        event GamepadEventHandler Trigger;
 
         #endregion
+
+        void SendTrigger(short leftThumbX, short leftThumbY, short rightThumbX, short rightThumbY);
+
+        #region BOTH
+
+        StreamReader GetGamepadReader();
+
+        StreamWriter GetGamepadWriter();
+
+        #endregion
+
+        void StartGamepadListener();
+
+        void StopGamepadListener();
 
         #region PARENT
 
@@ -39,6 +52,8 @@ namespace ViveTracker.Treadmill.Common.Interface
         #endregion
 
         #region CHILD
+
+        Task<bool> AnswerOpenGamepadCanal(string clientHandle);
 
         #endregion
     }

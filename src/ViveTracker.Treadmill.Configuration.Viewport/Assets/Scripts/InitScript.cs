@@ -21,8 +21,10 @@ public class InitScript : MonoBehaviour {
         }
     }
 
-	// Use this for initialization
-	void Start () {
+    private IGamepadService gamepadService = null;
+
+    // Use this for initialization
+    void Start () {
 
         DontDestroyOnLoad(this);
 
@@ -32,6 +34,8 @@ public class InitScript : MonoBehaviour {
             Application.targetFrameRate = 60;
 
             ServiceHelper.RegisterServices();
+
+            gamepadService = DependencyService.Get<IGamepadService>();
 
 #if RELEASE
 
@@ -45,9 +49,26 @@ public class InitScript : MonoBehaviour {
             PipeHelpers.OpenPipes();
         }
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+    private static System.Random rand = new System.Random();
+
+    public bool first = true;
+
+    // Update is called once per frame
+    void Update () {
+
+        if (first == true)
+        {
+            if (gamepadService.GetGamepadWriter() == null)
+                return;
+
+            gamepadService.SendTrigger(
+            (short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
+            (short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
+            (short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
+            (short)rand.Next(short.MinValue + 10, short.MaxValue - 10));
+
+            first = false;
+        }
 	}
 }

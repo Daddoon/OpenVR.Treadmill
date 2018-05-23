@@ -70,7 +70,7 @@ namespace ViveTracker.Treadmill.Configuration.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + $".\nCheck if Container.exe is placed next to {ApplicationModel.Apps.Viewport.GetAppExecutableName()}.");
+                MessageBox.Show(ex.Message);
             }
 
         }
@@ -122,6 +122,8 @@ namespace ViveTracker.Treadmill.Configuration.Forms
 
         private void Application_ApplicationExit(object sender, EventArgs e)
         {
+            var gamepadService = DependencyService.Get<IGamepadService>();
+            gamepadService.CloseGamepadCanal();
             ProcessHelper.StopAllChildProcess();
         }
 

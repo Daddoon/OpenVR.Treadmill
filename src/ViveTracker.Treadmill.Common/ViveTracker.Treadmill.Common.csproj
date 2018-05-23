@@ -48,6 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ProxyInterface.cs" />
+    <Compile Include="Events\GamepadEventArgs.cs" />
+    <Compile Include="Events\GamepadEventHandler.cs" />
+    <Compile Include="Helper\ByteHelper.cs" />
+    <Compile Include="Helper\MethodInfoHelper.cs" />
     <Compile Include="Helper\PipeHelper.cs" />
     <Compile Include="Interface\Base\IPipedEntity.cs" />
     <Compile Include="Interface\IGamepadService.cs" />
@@ -56,6 +60,7 @@
     <Compile Include="Interop\MethodProxy.cs" />
     <Compile Include="Interop\MethodProxyHelper.cs" />
     <Compile Include="Models\DeviceState.cs" />
+    <Compile Include="Models\GamepadEventStruct.cs" />
     <Compile Include="Models\PipedEntity.cs" />
     <Compile Include="Models\TaskDispatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
