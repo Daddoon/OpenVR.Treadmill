@@ -94,33 +94,35 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Services
                     var sr = GetGamepadReader();
                     if (sr != null)
                     {
-                        byte[] buffer = new byte[structSize];
-                        byte[] temp = new byte[structSize];
-                        int alreadyRead = 0;
+                        var result = sr.ReadLine();
 
-                        while (alreadyRead < structSize)
-                        {
-                            int read = sr.BaseStream.Read(temp, 0, structSize);
-                            if (read <= 0)
-                            {
-                                //TODO: Notify failure if needed
+                        //byte[] buffer = new byte[structSize];
+                        //byte[] temp = new byte[structSize];
+                        //int alreadyRead = 0;
 
-                                //Pipe closed
-                                return;
-                            }
+                        //while (alreadyRead < structSize)
+                        //{
+                        //    int read = sr.BaseStream.Read(temp, 0, structSize);
+                        //    if (read <= 0)
+                        //    {
+                        //        //TODO: Notify failure if needed
 
-                            if (read == structSize)
-                            {
-                                buffer = temp;
-                                break;
-                            }
+                        //        //Pipe closed
+                        //        return;
+                        //    }
 
-                            Array.Copy(temp, 0, buffer, alreadyRead, read);
-                            alreadyRead += read;
-                        }
+                        //    if (read == structSize)
+                        //    {
+                        //        buffer = temp;
+                        //        break;
+                        //    }
 
-                        var gamepadStruct = ByteHelper.FromBytes<GamepadEventStruct>(buffer);
-                        OnTrigger(new GamepadEventArgs(gamepadStruct.leftThumbX, gamepadStruct.leftThumbY, gamepadStruct.rightThumbX, gamepadStruct.rightThumbY));
+                        //    Array.Copy(temp, 0, buffer, alreadyRead, read);
+                        //    alreadyRead += read;
+                        //}
+
+                        //var gamepadStruct = ByteHelper.FromBytes<GamepadEventStruct>(buffer);
+                        //OnTrigger(new GamepadEventArgs(gamepadStruct.leftThumbX, gamepadStruct.leftThumbY, gamepadStruct.rightThumbX, gamepadStruct.rightThumbY));
                     }
                 }
             }, token);
@@ -145,26 +147,30 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Services
 
         public ITaskBool OpenGamepadCanal()
         {
-            //We first try to open VirtualGamepad locally
-            try
-            {
-                GamepadControl.PlugGamepad();
-            }
-            catch (Exception)
-            {
-                //TODO: CATCH DRIVER VIGEM BUS MISSING
-                return ITask.FromResult(false);
-            }
+            return ITask.FromResult(true);
+
+            ////We first try to open VirtualGamepad locally
+            //try
+            //{
+            //    GamepadControl.PlugGamepad();
+            //}
+            //catch (Exception)
+            //{
+            //    //TODO: CATCH DRIVER VIGEM BUS MISSING
+            //    return ITask.FromResult(false);
+            //}
 
             _clientReceive = new AnonymousPipeServerStream(
                 PipeDirection.In,
                 HandleInheritability.Inheritable);
             _clientReceive.ReadMode = PipeTransmissionMode.Byte;
 
-            _gpr = new StreamReader(_clientReceive);
-
             string clientHandle = _clientReceive.GetClientHandleAsString();
             _clientReceive.DisposeLocalCopyOfClientHandle();
+
+            Task.Delay(1000).GetAwaiter().GetResult();
+
+            _gpr = new StreamReader(_clientReceive);
 
             return MethodDispatcher.CallMethodAsync<bool>(
                 GetPipe()[0],

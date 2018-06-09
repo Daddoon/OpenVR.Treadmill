@@ -24,11 +24,19 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
         private AnonymousPipeServerStream _clientReceive { get; set; }
         private StreamReader sr = null;
 
+        //This pipe receive
+        private AnonymousPipeServerStream _clientGamepad { get; set; }
+        private StreamReader srgp = null;
+
         private Task receiveHandler = null;
 
         public PipedProcess() : base()
         {
             _clientReceive = new AnonymousPipeServerStream(
+                PipeDirection.In,
+                HandleInheritability.Inheritable);
+
+            _clientGamepad = new AnonymousPipeServerStream(
                 PipeDirection.In,
                 HandleInheritability.Inheritable);
 
@@ -38,6 +46,7 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
 
             _clientReceive.ReadMode = PipeTransmissionMode.Byte;
             _clientSend.ReadMode = PipeTransmissionMode.Byte;
+            _clientGamepad.ReadMode = PipeTransmissionMode.Byte;
         }
 
         public StreamWriter GetSendPipe()
@@ -45,11 +54,17 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
             return sw;
         }
 
+        public StreamReader GetGamepadPipe()
+        {
+            return srgp;
+        }
+
         public new bool Start()
         {
             var success = ((Process)this).Start();
             _clientReceive.DisposeLocalCopyOfClientHandle();
             _clientSend.DisposeLocalCopyOfClientHandle();
+            _clientGamepad.DisposeLocalCopyOfClientHandle();
 
             if (success == false)
                 return false;
@@ -63,6 +78,7 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
 
             //We should now receive the PipeHandle of the Child
             sr = new StreamReader(_clientReceive);
+            srgp = new StreamReader(_clientGamepad);
             string handle = sr.ReadLine();
 
             if (handle != "OK")
@@ -80,8 +96,14 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
             var result = sr.ReadLine();
             if (result == "OK")
             {
-                receiveHandler = ReceiveHandler();
-                return true;
+                result = srgp.ReadLine();
+                if (result == "OK")
+                {
+                    receiveHandler = ReceiveHandler();
+                    return true;
+                }
+
+                return false;
             }
 
             return false;
@@ -112,11 +134,17 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Models
             return _clientSend.GetClientHandleAsString();
         }
 
+        public string GetGamepadPipeHandler()
+        {
+            return _clientGamepad.GetClientHandleAsString();
+        }
+
         public void DisposeClientPipe()
         {
             //TODO: Send disconnection to client
-            _clientSend.Dispose();
-            _clientReceive.Dispose();
+            _clientSend?.Dispose();
+            _clientReceive?.Dispose();
+            _clientGamepad?.Dispose();
         }
     }
 }

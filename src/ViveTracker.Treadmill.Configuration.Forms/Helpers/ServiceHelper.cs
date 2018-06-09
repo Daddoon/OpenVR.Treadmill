@@ -32,6 +32,7 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Helpers
             {
                 MessageBox.Show("Unable to launch Gamepad background service. Application will now exit");
                 Application.Exit();
+                return;
             }
 
             gamepadService.StartGamepadListener();

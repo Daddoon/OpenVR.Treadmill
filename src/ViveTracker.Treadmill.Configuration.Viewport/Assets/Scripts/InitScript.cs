@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using ViveTracker.Treadmill.Common.Interface;
 using ViveTracker.Treadmill.Common.Services;
@@ -54,19 +55,39 @@ public class InitScript : MonoBehaviour {
 
     public bool first = true;
 
+
+    private float dta = 0.0f;
     // Update is called once per frame
     void Update () {
+
+        return;
 
         if (first == true)
         {
             if (gamepadService.GetGamepadWriter() == null)
                 return;
 
-            gamepadService.SendTrigger(
-            (short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
-            (short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
-            (short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
-            (short)rand.Next(short.MinValue + 10, short.MaxValue - 10));
+            dta += Time.deltaTime;
+            if (dta < 2.0f)
+                return;
+
+            try
+            {
+                var sw = gamepadService.GetGamepadWriter();
+                sw.WriteLine("DumbValue");
+            }
+            catch (Exception ex)
+            {
+                DependencyService.Get<IMessageBox>().ShowAlert("Gamepad.exe: " + ex.Message + " " + ex.StackTrace);
+            }
+
+
+
+            //gamepadService.SendTrigger(
+            //(short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
+            //(short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
+            //(short)rand.Next(short.MinValue + 10, short.MaxValue - 10),
+            //(short)rand.Next(short.MinValue + 10, short.MaxValue - 10));
 
             first = false;
         }

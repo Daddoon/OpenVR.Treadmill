@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
@@ -8,6 +9,7 @@ using ViveTracker.Treadmill.Common.Events;
 using ViveTracker.Treadmill.Common.Helper;
 using ViveTracker.Treadmill.Common.Interface;
 using ViveTracker.Treadmill.Common.Models;
+using ViveTracker.Treadmill.Common.Services;
 
 public class GamepadService : PipedEntity, IGamepadService
 {
@@ -25,16 +27,25 @@ public class GamepadService : PipedEntity, IGamepadService
     {
         try
         {
+            DependencyService.Get<IMessageBox>().ShowAlert("Client Handle: " + clientHandle);
+
             _clientSend = new AnonymousPipeClientStream(PipeDirection.Out, clientHandle);
             _clientSend.ReadMode = PipeTransmissionMode.Byte;
 
             _gpw = new StreamWriter(_clientSend);
             _gpw.AutoFlush = true;
 
+            Task.Delay(1000).GetAwaiter().GetResult();
+
+            //_gpw.WriteLine("OK");
+
+            DependencyService.Get<IMessageBox>().ShowAlert("Client is connected: " + _clientSend.IsConnected);
+
             return Task.FromResult(true);
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
+            DependencyService.Get<IMessageBox>().ShowAlert("Gamepad.exe: " + ex.Message + " " + ex.StackTrace);
             return Task.FromResult(false);
         }
     }

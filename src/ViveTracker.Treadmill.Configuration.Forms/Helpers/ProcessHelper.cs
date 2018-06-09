@@ -35,7 +35,7 @@ namespace ViveTracker.Treadmill.Configuration.Forms.Helpers
         {
             var process = new PipedProcess();
             process.StartInfo.FileName = ApplicationModel.Apps.Gamepad.GetAppExecutableAbsolutePath();
-            process.StartInfo.Arguments = "-batchmode -nographics -pipeInHandle" + process.GetReceivePipeHandler() + " -pipeOutHandle" + process.GetSendPipeHandler() +  " " + Environment.CommandLine;
+            process.StartInfo.Arguments = "-batchmode -nographics -pipeInHandle" + process.GetReceivePipeHandler() + " -pipeOutHandle" + process.GetSendPipeHandler() + " -pipeGamepadHandle" + process.GetGamepadPipeHandler() + " " + Environment.CommandLine;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
 

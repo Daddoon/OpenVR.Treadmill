@@ -21,10 +21,14 @@ public static class PipeHelpers {
     private static AnonymousPipeClientStream _pipeSend = null;
     private static StreamWriter sw = null;
 
-    public static void GetPipeHandlers(out string pipeIn, out string pipeOut)
+    private static AnonymousPipeClientStream _pipeGamepad = null;
+    private static StreamWriter gpsw = null;
+
+    public static void GetPipeHandlers(out string pipeIn, out string pipeOut, out string pipeGamepad)
     {
         pipeIn = null;
-        pipeOut = null; ;
+        pipeOut = null;
+        pipeGamepad = null;
 
         pipeIn = InitScript.Arguments.FirstOrDefault(p => p.StartsWith("-pipeInHandle"));
         if (pipeIn == null)
@@ -35,6 +39,10 @@ public static class PipeHelpers {
         pipeOut = InitScript.Arguments.FirstOrDefault(p => p.StartsWith("-pipeOutHandle"));
 
         pipeOut = pipeOut.Replace("-pipeOutHandle", string.Empty).TrimEnd().Trim('\n').Trim('\r');
+
+        pipeGamepad = InitScript.Arguments.FirstOrDefault(p => p.StartsWith("-pipeGamepadHandle"));
+
+        pipeGamepad = pipeOut.Replace("-pipeGamepadHandle", string.Empty).TrimEnd().Trim('\n').Trim('\r');
 
         return;
 
@@ -51,8 +59,13 @@ public static class PipeHelpers {
 
         string pipeIn = null;
         string pipeOut = null;
+        string pipeGamepad = null;
 
-        GetPipeHandlers(out pipeIn, out pipeOut);
+        GetPipeHandlers(out pipeIn, out pipeOut, out pipeGamepad);
+
+        Debug.Log("PipeIn: " + pipeIn);
+        Debug.Log("pipeOut: " + pipeOut);
+        Debug.Log("pipeGamepad: " + pipeGamepad);
 
         //Actually name are inverted related to the parent
 
@@ -62,17 +75,28 @@ public static class PipeHelpers {
         _pipeReceive = new AnonymousPipeClientStream(PipeDirection.In, pipeOut);
         _pipeReceive.ReadMode = PipeTransmissionMode.Byte;
 
+        _pipeGamepad = new AnonymousPipeClientStream(PipeDirection.Out, pipeGamepad);
+        _pipeGamepad.ReadMode = PipeTransmissionMode.Byte;
+
         sr = new StreamReader(_pipeReceive);
 
         sw = new StreamWriter(_pipeSend);
         sw.AutoFlush = true;
+
+        gpsw = new StreamWriter(_pipeGamepad);
+        gpsw.AutoFlush = true;
+
         sw.WriteLine("OK");
 
         _pipeSend.WaitForPipeDrain();
 
         string result = sr.ReadLine();
         if (result == "OK")
+        {
             sw.WriteLine("OK");
+            _pipeSend.WaitForPipeDrain();
+            gpsw.WriteLine("OK");
+        }
         else
             sw.WriteLine("KO");
 
