@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveTracker.Dashboard", "ViveTracker.Dashboard.csproj", "{711461B1-D00E-303D-4188-8DAA6BE286EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{711461B1-D00E-303D-4188-8DAA6BE286EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711461B1-D00E-303D-4188-8DAA6BE286EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711461B1-D00E-303D-4188-8DAA6BE286EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711461B1-D00E-303D-4188-8DAA6BE286EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

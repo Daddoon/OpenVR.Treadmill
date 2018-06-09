@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaceOnGround : MonoBehaviour {
+public class FollowGridPosition : MonoBehaviour {
 
     public GameObject ParentObject;
 
