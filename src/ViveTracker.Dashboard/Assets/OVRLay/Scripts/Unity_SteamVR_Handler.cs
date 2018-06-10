@@ -16,6 +16,8 @@ public class Unity_SteamVR_Handler : MonoBehaviour
 	public GameObject hmdObject;
 	public GameObject rightTrackerObj;
 	public GameObject leftTrackerObj;
+    public GameObject leftFootTrackerObj;
+    public GameObject rightFootTrackerObj;
 
 	[Space(10)]
 
@@ -105,7 +107,25 @@ public class Unity_SteamVR_Handler : MonoBehaviour
 		}
 		else if(leftTrackerObj)
 			leftTrackerObj.SetActive(false);
-	}
+
+        //LEFT FOOT
+        if (poseHandler.leftFootActive && leftFootTrackerObj)
+        {
+            leftFootTrackerObj.SetActive(true);
+            poseHandler.SetTransformToTrackedDevice(leftFootTrackerObj.transform, poseHandler.leftFootIndex);
+        }
+        else if (leftFootTrackerObj)
+            leftFootTrackerObj.SetActive(false);
+
+        //RIGHT FOOT
+        if (poseHandler.rightFootActive && rightFootTrackerObj)
+        {
+            rightFootTrackerObj.SetActive(true);
+            poseHandler.SetTransformToTrackedDevice(rightFootTrackerObj.transform, poseHandler.rightFootIndex);
+        }
+        else if (rightFootTrackerObj)
+            rightFootTrackerObj.SetActive(false);
+    }
 
 	public void VREventHandler(VREvent_t e)
 	{

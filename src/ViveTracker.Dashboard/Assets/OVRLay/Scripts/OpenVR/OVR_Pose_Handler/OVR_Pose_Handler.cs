@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using Valve.VR;
 
@@ -30,9 +31,15 @@ public partial class OVR_Pose_Handler
 	public uint hmdIndex = OpenVR.k_unTrackedDeviceIndex_Hmd;
 	public uint rightIndex = OpenVR.k_unTrackedDeviceIndexInvalid;
 	public uint leftIndex = OpenVR.k_unTrackedDeviceIndexInvalid;
+    public uint leftFootIndex = OpenVR.k_unTrackedDeviceIndexInvalid;
+    public uint rightFootIndex = OpenVR.k_unTrackedDeviceIndexInvalid;
 
     public bool rightActive { get { return rightIndex != OpenVR.k_unTrackedDeviceIndexInvalid; } }
     public bool leftActive { get { return leftIndex != OpenVR.k_unTrackedDeviceIndexInvalid; } }
+
+    public bool rightFootActive { get { return rightFootIndex != OpenVR.k_unTrackedDeviceIndexInvalid; } }
+
+    public bool leftFootActive { get { return leftFootIndex != OpenVR.k_unTrackedDeviceIndexInvalid; } }
 
     public void UpdatePoses()
     {
@@ -41,6 +48,8 @@ public partial class OVR_Pose_Handler
 
 		rightIndex = VRSystem.GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole.RightHand);
 		leftIndex = VRSystem.GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole.LeftHand);
+        leftFootIndex = VRSystem.GetTrackedDeviceIndexForTrackerRole(EViveTrackerControllerRole.Tracker1);
+        rightFootIndex = VRSystem.GetTrackedDeviceIndexForTrackerRole(EViveTrackerControllerRole.Tracker2);
 
         Compositor.GetLastPoses(poses, gamePoses);
     }

@@ -6,10 +6,13 @@ public class MovementZoneDetectionUI : MovementZoneBase
 {
     private MovementZoneManager parentZoneManager = null;
 
+    private SphereCollider MaxCollider;
+
     protected override void Awake()
     {
         base.Awake();
         parentZoneManager = this.transform.parent.gameObject.GetComponent<MovementZoneManager>();
+        MaxCollider = GetComponent<SphereCollider>();
     }
 
     // Use this for initialization
@@ -21,6 +24,16 @@ public class MovementZoneDetectionUI : MovementZoneBase
 	void Update () {
         //DetectionUpscaleSimulationLoop();
 	}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Trigger Activated!");
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("Trigger Exit!");
+    }
 
     void DetectionUpscaleSimulationLoop()
     {
