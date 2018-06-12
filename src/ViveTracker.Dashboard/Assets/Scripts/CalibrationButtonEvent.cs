@@ -10,6 +10,8 @@ public class CalibrationButtonEvent : MonoBehaviour {
     public GameObject leftFootOverlay;
     public GameObject rightFootOverlay;
 
+    public FollowGridPosition gridPosition;
+
     // Use this for initialization
     void Start () {
         calibrateBtn = GetComponent<Button>();
@@ -23,6 +25,12 @@ public class CalibrationButtonEvent : MonoBehaviour {
 
     IEnumerator CalibrateFeets()
     {
+        //Positioning the joystick zone as we don't want to alterate the experience if the head move afterward calibration
+        if (gridPosition != null)
+        {
+            gridPosition.SetJoystickPosition();
+        }
+
         for (int i = 0; i < 3; i++)
         {
             if (leftFootOverlay != null)
