@@ -10,6 +10,8 @@ public class FootManager : MonoBehaviour {
     public Unity_Overlay overlay;
     public Unity_SteamVR_Handler handler;
 
+    public GameObject ObjectToFollow;
+
     public bool IsLeftFoot = false;
 
     protected void Awake()
@@ -24,7 +26,7 @@ public class FootManager : MonoBehaviour {
             Debug.LogError("Unable to find SteamVR handler in scene");
         }
 
-        SetDeviceToTrack();
+        //SetDeviceToTrack();
     }
 
     public uint GetFootIndex()
@@ -36,37 +38,78 @@ public class FootManager : MonoBehaviour {
     }
 
     private uint previousIndex = OpenVR.k_unTrackedDeviceIndexInvalid;
-    private bool CheckForTrackerIndexChange()
-    {
-        var newIndex = GetFootIndex();
+    //private bool CheckForTrackerIndexChange()
+    //{
+    //    var newIndex = GetFootIndex();
 
-        if (newIndex != previousIndex)
-        {
-            previousIndex = newIndex;
-            return true;
-        }
-        return false;
-    }
+    //    if (newIndex != previousIndex)
+    //    {
+    //        previousIndex = newIndex;
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
-    private void SetDeviceToTrack()
-    {
-        if (previousIndex == OpenVR.k_unTrackedDeviceIndexInvalid)
-        {
-            overlay.deviceToTrack = Unity_Overlay.OverlayTrackedDevice.None;
-            overlay.customDeviceIndex = 0;
-        }
-        else
-        {
-            overlay.deviceToTrack = Unity_Overlay.OverlayTrackedDevice.CustomIndex;
-            overlay.customDeviceIndex = previousIndex;
-        }
-    }
+    //private void SetDeviceToTrack()
+    //{
+    //    if (previousIndex == OpenVR.k_unTrackedDeviceIndexInvalid)
+    //    {
+    //        overlay.deviceToTrack = Unity_Overlay.OverlayTrackedDevice.None;
+    //        overlay.customDeviceIndex = 0;
+    //    }
+    //    else
+    //    {
+    //        overlay.deviceToTrack = Unity_Overlay.OverlayTrackedDevice.CustomIndex;
+    //        overlay.customDeviceIndex = previousIndex;
+    //    }
+    //}
 	
 	// Update is called once per frame
 	void Update () {
-        if (CheckForTrackerIndexChange())
+        //if (CheckForTrackerIndexChange())
+        //{
+        //    SetDeviceToTrack();
+        //}
+
+        if (ObjectToFollow != null && GetFootIndex() != OpenVR.k_unTrackedDeviceIndexInvalid)
         {
-            SetDeviceToTrack();
+            if (!overlay.isVisible)
+                overlay.isVisible = true;
+
+            //this.transform.position = new Vector3(
+            //    ObjectToFollow.transform.position.x,
+            //    ObjectToFollow.transform.position.y,
+            //    ObjectToFollow.transform.position.z);
+
+            //var rotation = new Quaternion(
+            //  ObjectToFollow.transform.rotation.x,
+            //  ObjectToFollow.transform.rotation.y,
+            //  ObjectToFollow.transform.rotation.z,
+            //  ObjectToFollow.transform.rotation.w);
+
+            float RotationX = 0.0f;
+            float RotationY = 0.0f;
+            float RotationZ = 0.0f;
+
+            if (IsLeftFoot)
+            {
+                RotationX = MovementCalibration.ComputedLeftFeetBaseRotationX;
+                RotationY = MovementCalibration.ComputedLeftFeetBaseRotationY;
+                RotationZ = MovementCalibration.ComputedLeftFeetBaseRotationZ;
+            }
+            else
+            {
+                RotationX = MovementCalibration.ComputedRightFeetBaseRotationX;
+                RotationY = MovementCalibration.ComputedRightFeetBaseRotationY;
+                RotationZ = MovementCalibration.ComputedLeftFeetBaseRotationZ;
+            }
+            
+            this.gameObject.transform.localRotation = Quaternion.Euler(RotationX, RotationY, RotationZ);
+        }
+        else
+        {
+            if (overlay.isVisible)
+                overlay.isVisible = false;
         }
     }
 }

@@ -74,6 +74,9 @@
     <Reference Include="UnityEngine.VR">
       <HintPath>C:/Program Files/Unity 5.6/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading.Tasks.Net35">
+      <HintPath>Assets/Scripts/Libraries/System.Threading.Tasks.Net35.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>C:/Program Files/Unity 5.6/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
@@ -94,7 +97,9 @@
     <Compile Include="Assets\OVRLay\Scripts\Plugins\openvr_api.cs" />
     <Compile Include="Assets\OVRLay\Scripts\Unity_Overlay.cs" />
     <Compile Include="Assets\OVRLay\Scripts\Unity_SteamVR_Handler.cs" />
+    <Compile Include="Assets\Scripts\CalibrationButtonEvent.cs" />
     <Compile Include="Assets\Scripts\FootManager.cs" />
+    <Compile Include="Assets\Scripts\MovementCalibration.cs" />
     <Compile Include="Assets\Scripts\MovementConst.cs" />
     <Compile Include="Assets\Scripts\MovementZoneBase.cs" />
     <Compile Include="Assets\Scripts\MovementZoneDetectionUI.cs" />
