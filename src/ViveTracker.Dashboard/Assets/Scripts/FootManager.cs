@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Valve.VR;
 
 [RequireComponent(typeof(Unity_Overlay))]
@@ -9,6 +10,8 @@ public class FootManager : MonoBehaviour {
     [HideInInspector]
     public Unity_Overlay overlay;
     public Unity_SteamVR_Handler handler;
+
+    public Text PitchLabel;
 
     [HideInInspector]
     public float Pitch;
@@ -40,6 +43,21 @@ public class FootManager : MonoBehaviour {
             return handler.poseHandler.rightFootIndex;
     }
 	
+    void UpdatePitchLabel()
+    {
+        if (PitchLabel != null)
+        {
+            if (IsLeftFoot)
+            {
+                PitchLabel.text = "Left pitch: " + Pitch;
+            }
+            else
+            {
+                PitchLabel.text = "Right pitch: " + Pitch;
+            }
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -69,11 +87,13 @@ public class FootManager : MonoBehaviour {
 
             Pitch = MovementCalibration.BoundsDisplacement(MovementCalibration.GetXAngle(ObjectToFollow.transform), MovementCalibration.PitchBaseRotationDelta) + MovementCalibration.PitchBaseRotationDelta;
 
-            Debug.Log("Pich: " + Pitch);
+            UpdatePitchLabel();
         }
         else
         {
             Pitch = MovementCalibration.PitchNeutral;
+
+            UpdatePitchLabel();
 
             if (overlay.isVisible)
                 overlay.isVisible = false;
