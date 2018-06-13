@@ -10,6 +10,9 @@ public class FootManager : MonoBehaviour {
     public Unity_Overlay overlay;
     public Unity_SteamVR_Handler handler;
 
+    [HideInInspector]
+    public float Pitch;
+
     public GameObject ObjectToFollow;
 
     public bool IsLeftFoot = false;
@@ -36,56 +39,14 @@ public class FootManager : MonoBehaviour {
         else
             return handler.poseHandler.rightFootIndex;
     }
-
-    private uint previousIndex = OpenVR.k_unTrackedDeviceIndexInvalid;
-    //private bool CheckForTrackerIndexChange()
-    //{
-    //    var newIndex = GetFootIndex();
-
-    //    if (newIndex != previousIndex)
-    //    {
-    //        previousIndex = newIndex;
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    //private void SetDeviceToTrack()
-    //{
-    //    if (previousIndex == OpenVR.k_unTrackedDeviceIndexInvalid)
-    //    {
-    //        overlay.deviceToTrack = Unity_Overlay.OverlayTrackedDevice.None;
-    //        overlay.customDeviceIndex = 0;
-    //    }
-    //    else
-    //    {
-    //        overlay.deviceToTrack = Unity_Overlay.OverlayTrackedDevice.CustomIndex;
-    //        overlay.customDeviceIndex = previousIndex;
-    //    }
-    //}
 	
 	// Update is called once per frame
 	void Update () {
-        //if (CheckForTrackerIndexChange())
-        //{
-        //    SetDeviceToTrack();
-        //}
 
         if (ObjectToFollow != null && GetFootIndex() != OpenVR.k_unTrackedDeviceIndexInvalid)
         {
             if (!overlay.isVisible)
                 overlay.isVisible = true;
-
-            //this.transform.position = new Vector3(
-            //    ObjectToFollow.transform.position.x,
-            //    ObjectToFollow.transform.position.y,
-            //    ObjectToFollow.transform.position.z);
-
-            //var rotation = new Quaternion(
-            //  ObjectToFollow.transform.rotation.x,
-            //  ObjectToFollow.transform.rotation.y,
-            //  ObjectToFollow.transform.rotation.z,
-            //  ObjectToFollow.transform.rotation.w);
 
             float RotationX = 0.0f;
             float RotationY = 0.0f;
@@ -101,13 +62,19 @@ public class FootManager : MonoBehaviour {
             {
                 RotationX = MovementCalibration.ComputedRightFeetBaseRotationX;
                 RotationY = MovementCalibration.ComputedRightFeetBaseRotationY;
-                RotationZ = MovementCalibration.ComputedLeftFeetBaseRotationZ;
+                RotationZ = MovementCalibration.ComputedRightFeetBaseRotationZ;
             }
             
             this.gameObject.transform.localRotation = Quaternion.Euler(RotationX, RotationY, RotationZ);
+
+            Pitch = MovementCalibration.BoundsDisplacement(MovementCalibration.GetXAngle(ObjectToFollow.transform), MovementCalibration.PitchBaseRotationDelta) + MovementCalibration.PitchBaseRotationDelta;
+
+            Debug.Log("Pich: " + Pitch);
         }
         else
         {
+            Pitch = MovementCalibration.PitchNeutral;
+
             if (overlay.isVisible)
                 overlay.isVisible = false;
         }
