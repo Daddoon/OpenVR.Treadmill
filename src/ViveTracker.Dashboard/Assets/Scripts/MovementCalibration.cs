@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 public static class MovementCalibration
@@ -8,7 +10,7 @@ public static class MovementCalibration
     public const float FeetDefaultInitialLocalRotationY = 180.0f;
     public const float FeetDefaultInitialLocalRotationZ = 0.0f;
 
-    public const float PitchNeutral = 90.0f;
+    public const float PitchNeutral = -90.0f;
 
     public static float _pitchRotationDelta = 0.0f;
 
@@ -94,29 +96,51 @@ public static class MovementCalibration
 
     public static float ComputedBasePitch = PitchNeutral;
 
+    private static MethodInfo GetLocalEulerAnglesMethod = null;
+    private static PropertyInfo rotationOrderProperty = null;
+
     public static float GetXAngle(Transform transform)
     {
-        float xAngle;
+        Vector3 vect3 = Vector3.zero;
 
-        // Get X
-        if (transform.eulerAngles.y > 180f)
+        if (GetLocalEulerAnglesMethod == null)
         {
-            //if (dragAlphaArrow.eulerAngles.x > 256f)
-            if (transform.eulerAngles.x > 256f)
-                xAngle = (transform.eulerAngles.x * -1f) + 360f;
-            else
-                xAngle = -transform.eulerAngles.x;
-        }
-        else
-        {
-
-            if (transform.eulerAngles.x > 256f)
-                xAngle = transform.eulerAngles.x - 180f;
-            else
-                xAngle = ((transform.eulerAngles.x * -1f) + 180f) * -1f;
+            GetLocalEulerAnglesMethod = typeof(Transform).GetMethod("GetLocalEulerAngles", BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        return xAngle;
+        if (rotationOrderProperty == null)
+        {
+            rotationOrderProperty = typeof(Transform).GetProperty("rotationOrder", BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+       
+
+        object rotationOrder = null;
+        if (rotationOrderProperty != null)
+        {
+            rotationOrder = rotationOrderProperty.GetValue(transform, null);
+        }
+        if (GetLocalEulerAnglesMethod != null)
+        {
+            object retVector3 = GetLocalEulerAnglesMethod.Invoke(transform, new object[] { rotationOrder });
+            vect3 = (Vector3)retVector3;
+            //Debug.Log("Get Inspector Euler:" + vect3);
+        }
+
+        float result = vect3.x;
+
+        if (vect3.z > 150 || vect3.z < -150)
+        {
+            if (vect3.x < 0)
+            {
+                result = (180f + vect3.x) * -1f;
+            }
+            else if (vect3.x > 0)
+            {
+                result = (-180f + vect3.x) * -1f;
+            }
+        }
+
+        return result;
     }
 
     public static float BoundsDisplacement(float angle, float displacement)

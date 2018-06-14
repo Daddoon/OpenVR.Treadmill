@@ -20,6 +20,9 @@ public class FootManager : MonoBehaviour {
 
     public bool IsLeftFoot = false;
 
+    [HideInInspector]
+    public bool HasForwardAngle = true; 
+
     protected void Awake()
     {
         overlay = GetComponent<Unity_Overlay>();
@@ -47,14 +50,30 @@ public class FootManager : MonoBehaviour {
     {
         if (PitchLabel != null)
         {
-            if (IsLeftFoot)
+            string footName = string.Empty;
+
+            if (!IsLeftFoot)
             {
-                PitchLabel.text = "Left pitch: " + Pitch;
+                footName = "Right foot pitch: ";
             }
             else
             {
-                PitchLabel.text = "Right pitch: " + Pitch;
+                footName = "Left foot pitch: ";
             }
+
+            PitchLabel.text = footName + string.Format("{0:F3}", Pitch) + ", Direction: " + (HasForwardAngle ? "Forward" : "Backward");
+        }
+    }
+
+    void ComputeForwardAngle()
+    {
+        if (Pitch >= -45.0f && Pitch <= 20.0f)
+        {
+            HasForwardAngle = false;
+        }
+        else
+        {
+            HasForwardAngle = true;
         }
     }
 
@@ -87,11 +106,21 @@ public class FootManager : MonoBehaviour {
 
             Pitch = MovementCalibration.BoundsDisplacement(MovementCalibration.GetXAngle(ObjectToFollow.transform), MovementCalibration.PitchBaseRotationDelta) + MovementCalibration.PitchBaseRotationDelta;
 
+            if (IsLeftFoot)
+            {
+                Debug.Log("Pitch: " + Pitch);
+            }
+            
+
+            ComputeForwardAngle();
+
             UpdatePitchLabel();
         }
         else
         {
             Pitch = MovementCalibration.PitchNeutral;
+
+            ComputeForwardAngle();
 
             UpdatePitchLabel();
 
