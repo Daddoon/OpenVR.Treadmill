@@ -7,4 +7,9 @@ public static class MovementConst
     public const float MinMovementZoneRatio = 0.1f;
     public const float MaxMovementZoneRatio = 5.0f;
     public const float DefaultMovementZoneRatio = 1.0f;
+
+    //TIME
+    public const float FootDetectionRate = 0.1f;
+    public const float MaxFootStepAmplitude = 1.0f;
+    public const float FootStepIdle = 0.005f;
 }

@@ -11,6 +11,8 @@ public class FootManager : MonoBehaviour {
     public Unity_Overlay overlay;
     public Unity_SteamVR_Handler handler;
 
+    public GameObject HMD;
+
     public Text PitchLabel;
 
     [HideInInspector]
@@ -21,11 +23,16 @@ public class FootManager : MonoBehaviour {
     public bool IsLeftFoot = false;
 
     [HideInInspector]
-    public bool HasForwardAngle = true; 
+    public bool HasForwardAngle = true;
+
+    public StepInfo Step;
+
+    private float currentStepDuration = 0.0f;
 
     protected void Awake()
     {
         overlay = GetComponent<Unity_Overlay>();
+        StartCoroutine(GetFootDirection());
     }
 
     // Use this for initialization
@@ -77,10 +84,123 @@ public class FootManager : MonoBehaviour {
         }
     }
 
+    float StepCounter = 0.0f;
+    //float LastForwardDistance = 0.0f;
+    //float LastBackwardDistance = 0.0f;
+    float LastDistance = 0.0f;
+
+    void OnStepChange()
+    {
+        Debug.Log("Step: " + Step.State.ToString() + ", Amplitude:" + Step.Amplitude);
+    }
+
+    IEnumerator GetFootDirection()
+    {
+        var footTransform = ObjectToFollow.transform;
+        var hmdTransform = HMD.transform;
+
+        while (true)
+        {
+            if (!ValidFoot())
+            {
+                Step = new StepInfo();
+                yield return null;
+            }
+
+            currentStepDuration += Time.deltaTime;
+
+            if (currentStepDuration < MovementConst.FootDetectionRate)
+            {
+                yield return null;
+            }
+
+            currentStepDuration = 0.0f;
+
+            bool notifyStepChange = false;
+
+            float distance = Vector3.Distance(hmdTransform.position, footTransform.position);
+
+            var distanceDiff = Mathf.Abs(distance - LastDistance);
+            if (distanceDiff <= MovementConst.FootStepIdle)
+            {
+                var amplitude = distanceDiff;
+
+                if (Step.State == StepState.Neutral)
+                {
+                    amplitude = 0.0f;
+                }
+                else
+                {
+                    notifyStepChange = true;
+                }
+
+                Step = new StepInfo()
+                {
+                    State = StepState.Neutral,
+                    Amplitude = amplitude
+                };
+            }
+            else
+            {
+                var amplitude = distanceDiff;
+
+                if (distance > LastDistance)
+                {
+                    //Same Step state, we must add amplitude
+                    if (Step.State == StepState.StepIn)
+                    {
+                        amplitude += Step.Amplitude;
+                    }
+                    else
+                    {
+                        notifyStepChange = true;
+                    }
+
+                    Step = new StepInfo()
+                    {
+                        State = StepState.StepIn,
+                        Amplitude = amplitude
+                    };
+                }
+                else
+                {
+                    //Same Step state, we must add amplitude
+                    if (Step.State == StepState.StepOut)
+                    {
+                        amplitude += Step.Amplitude;
+                    }
+                    else
+                    {
+                        notifyStepChange = true;
+                    }
+
+                    Step = new StepInfo()
+                    {
+                        State = StepState.StepOut,
+                        Amplitude = amplitude
+                    };
+                }
+            }
+
+            LastDistance = distance;
+            if (notifyStepChange)
+            {
+                OnStepChange();
+            }
+
+            yield return null;
+        }
+    }
+
+    bool ValidFoot()
+    {
+        return ObjectToFollow != null && GetFootIndex() != OpenVR.k_unTrackedDeviceIndexInvalid;
+    }
+
 	// Update is called once per frame
 	void Update () {
 
-        if (ObjectToFollow != null && GetFootIndex() != OpenVR.k_unTrackedDeviceIndexInvalid)
+        if (ValidFoot())
         {
             if (!overlay.isVisible)
                 overlay.isVisible = true;
@@ -106,13 +226,15 @@ public class FootManager : MonoBehaviour {
 
             Pitch = MovementCalibration.BoundsDisplacement(MovementCalibration.GetXAngle(ObjectToFollow.transform), MovementCalibration.PitchBaseRotationDelta) + MovementCalibration.PitchBaseRotationDelta;
 
-            if (IsLeftFoot)
-            {
-                Debug.Log("Pitch: " + Pitch);
-            }
+            //if (IsLeftFoot)
+            //{
+            //    Debug.Log("Pitch: " + Pitch);
+            //}
             
 
             ComputeForwardAngle();
+
+            GetFootDirection();
 
             UpdatePitchLabel();
         }
@@ -121,6 +243,8 @@ public class FootManager : MonoBehaviour {
             Pitch = MovementCalibration.PitchNeutral;
 
             ComputeForwardAngle();
+
+            GetFootDirection();
 
             UpdatePitchLabel();
 
